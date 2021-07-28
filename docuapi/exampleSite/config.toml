@@ -34,17 +34,11 @@ maxMenuDepth = 3 # (optional) available options are: 1, 2, or 3 (default: 2)
   
 # Configure the language example tabs.
 [[params.language_tabs]]
-key = "go"
-name = "Go" 
+key = "csharp"
+name = "CSharp" 
 [[params.language_tabs]]
 key = "shell"
 name = "Shell" 
-[[params.language_tabs]]
-key = "ruby"
-name = "Ruby"
-[[params.language_tabs]]
-key = "python"
-name = "Python"
 [[params.language_tabs]]
 key = "javascript"
 name = "Javascript"
@@ -59,7 +53,7 @@ title = "DocuAPI Example Site"
 
 # Left sidebar footer items. Use HTMl or Markdown.
 toc_footers = [ 
-"<a href='#'>Sign Up for a Developer Key</a>",
+"<a href='mailto:info@encrypxon.com'>Sign Up for a Developer Key</a>",
 "Documentation Powered by [DocuAPI](https://github.com/bep/docuapi)",
 "Hugo Theme by [bep](https://github.com/bep)"
 ]
@@ -68,19 +62,4 @@ angledQuotes = false
 hrefTargetBlank = true
 
 
-[languages.nn]
-languageName = "Nynorsk"
-weight = 1
-title = "DocuAPI-døme"
 
-# Left sidebar footer items. Use HTMl or Markdown.
-toc_footers = [ 
-"<a href='#'>Registrer deg for ein utviklarnøkkel</a>",
-"Dokumentasjonen er driven av [DocuAPI](https://github.com/bep/docuapi)",
-"Hugo Theme av [bep](https://github.com/bep)"
-]
-
-[languages.nn.blackfriday]
-# Norwegian uses angled quotes
-angledQuotes = true
-hrefTargetBlank = true

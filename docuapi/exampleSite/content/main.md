@@ -5,45 +5,38 @@ title: API Reference
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome to the Encrypxon 2FA API! You can use our API to add 2FA into your web application.
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+We have language bindings in Shell, javascript and C# with more to come!
 
-**This example API documentation page was created with [DocuAPI](https://github.com/bep/docuapi/), a multilingual documentation theme for the static site generator [Hugo](http://gohugo.io/).** 
+You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
 
-# Authentication
+# How the 2FA process works
+
+The enrollment process works by notifying the Encrypxon app on the device to be used as the customers 2FA device that an enrollment request has been generated.
+
+The QRCode that is scanned by the users device has a unique identifier for the enrollment. When the QRCode is scanned, the device generates a new key pair to encrypt the data used later in the 2FA authentication process. The public key of this key pair is sent to the Encrypxon server along with unique enrollment code. The private key is held in secure storage in the customers device. It never leaves the device. 
+
+Using this mechanism of scanning a QRCode ensures that the user has the phone in proximity of your web application during the enrollment process.
+
+When a 2FA is requested by your application, the Encrypxon server sends some entropy encrypted with the public key of the users device, generated during the enrollment process.
+The device can decrypt this entropy using its private key. The decrypted entropy is sent back to the Encrypxon server and compared with the entropy sent to the device. If this matches then the 2FA is successful and your application can be notified that the user should be allowed to log in.
+
+A separate key pair is generated on the device for every website using the Encrypxon 2FA process. 
+
+Every 2FA request is stored on the Encrypxon server for audit purposes. 
+
+
+# API Authentication
 
 > To authorize, use this code:
 
-```go
-package main
 
-import "github.com/bep/kittn/auth"
-
-func main() {
-	api := auth.Authorize("meowmeowmeow")
-
-	// Just to make it compile
-	_ = api
-}
-```
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
 
 ```shell
 # With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
+curl "https://api.encrypxon.com"
+  -H "X-API-Key: YourApiKey"
 ```
 
 ```javascript
@@ -52,14 +45,19 @@ const kittn = require('kittn');
 let api = kittn.authorize('meowmeowmeow');
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
+```csharp
+var config = new EncrypxonClientConfiguration {ApiKey = "YourApiKey"};
+var client = new Encrypxon2FaClient(config);
+```
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+> Make sure to replace `YourApiKey` with your API key.
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+Encrypxon uses API keys to allow access to the API. You can get a new Encrypxon API key by emailing us at [developer support](mailto:info@encrypxon.com).
 
-`Authorization: meowmeowmeow`
+Encrypxon expects for the API key to be included in all API requests to the server in a header that looks like the following:
+
+`X_API_Key: YourApiKey`
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+You must replace <code>YourApiKey</code> with your personal API key.
 </aside>
