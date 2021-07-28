@@ -80,7 +80,7 @@ bool auth = res.Result.Result;
 }
 ```
 
-This endpoint tests whether or not a user has successfully responded to the 2FA authorrisation. 
+This endpoint tests whether or not a user has successfully responded to the 2FA authorisation. 
 
 The result is `true` if the user is enrolled or `false` otherwise.
 
@@ -88,7 +88,7 @@ The parameter required is the ID returned in the Start 2FA Authentication call.
 
 ### HTTP Request
 
-`POST http://api.encrypxon.com/2fa/enrolled?secondFactorId={requestId}`
+`POST http://api.encrypxon.com/2fa/Authorisation?secondFactorId={requestId}`
 
 
 <aside class="success">
