@@ -1,2 +1,2 @@
 FROM nginx
-COPY ./docuapi/exampleSite/public /usr/share/nginx/html
+COPY ./docuapi/exampleSite/public/ /usr/share/nginx/html
