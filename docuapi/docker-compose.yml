@@ -1,0 +1,17 @@
+version: '3'
+services:
+  web:
+    image: russellstather/encrypxon.dev2fa:${BUILD_ID}
+    container_name: encrypxon.dev2fa
+    restart: unless-stopped
+    ports:
+      - "80"
+    networks: 
+      - proxy
+    environment: 
+      - VIRTUAL_HOST=dev2fa.encrypxon.com
+      - LETSENCRYPT_HOST=dev2fa.encrypxon.com
+networks: 
+  proxy:
+    external: true
+
