@@ -9,7 +9,7 @@
 <link href=/styles/print.min.9c7d3c118c66de77e439d080b5fd628d6a5ed904dcaccf395285fffb0d97feb6.css rel=stylesheet media=print integrity="sha256-nH08EYxm3nfkOdCAtf1ijWpe2QTcrM85UoX/+w2X/rY=">
 <script src=/js/all.min.930f24c1ff99153e8b0852d9729d1994dfc8d81f6c92023e6445f5ad40541453.js integrity="sha256-kw8kwf+ZFT6LCFLZcp0ZlN/I2B9skgI+ZEX1rUBUFFM="></script>
 </head>
-<body class=index data-languages='[ "go" ,  "shell" ,  "ruby" ,  "python" ,  "javascript" ]'>
+<body class=index data-languages='[ "csharp" ,  "shell" ,  "javascript" ]'>
 <a href=# id=nav-button>
 <span>
 NAV
@@ -19,10 +19,8 @@ NAV
 <div class=toc-wrapper>
 <img src=/images/logo.png class=logo>
 <div class=lang-selector>
-<a href=# data-language-name=go>Go</a>
+<a href=# data-language-name=csharp>CSharp</a>
 <a href=# data-language-name=shell>Shell</a>
-<a href=# data-language-name=ruby>Ruby</a>
-<a href=# data-language-name=python>Python</a>
 <a href=# data-language-name=javascript>Javascript</a>
 </div>
 <div class=search>
@@ -36,18 +34,23 @@ Introduction
 </a>
 </li>
 <li>
-<a href=#authentication class="toc-h1 toc-link" data-title=Authentication>
-Authentication
+<a href=#how-the-2fa-process-works class="toc-h1 toc-link" data-title="How the 2FA process works">
+How the 2FA process works
 </a>
 </li>
 <li>
-<a href=#kittens class="toc-h1 toc-link" data-title=Kittens>
-Kittens
+<a href=#api-authentication class="toc-h1 toc-link" data-title="API Authentication">
+API Authentication
+</a>
+</li>
+<li>
+<a href=#enroll class="toc-h1 toc-link" data-title=Enroll>
+Enroll
 </a>
 <ul class=toc-list-h2>
 <li>
-<a href=#get-all-kittens class="toc-h2 toc-link" data-title="Get All Kittens">
-Get All Kittens
+<a href=#enroll-a-user-in-2fa class="toc-h2 toc-link" data-title="Enroll a user in 2FA">
+Enroll a user in 2FA
 </a>
 <ul class=toc-list-h3>
 <li>
@@ -55,16 +58,18 @@ Get All Kittens
 HTTP Request
 </a>
 </li>
-<li>
-<a href=#query-parameters class="toc-h3 toc-link" data-title="Query Parameters">
-Query Parameters
-</a>
+</ul>
 </li>
 </ul>
 </li>
 <li>
-<a href=#get-a-specific-kitten class="toc-h2 toc-link" data-title="Get a Specific Kitten">
-Get a Specific Kitten
+<a href=#enrolled class="toc-h1 toc-link" data-title=Enrolled>
+Enrolled
+</a>
+<ul class=toc-list-h2>
+<li>
+<a href=#check-whether-a-user-is-enrolled-in-2fa class="toc-h2 toc-link" data-title="Check whether a user is enrolled in 2FA">
+Check whether a user is enrolled in 2FA
 </a>
 <ul class=toc-list-h3>
 <li>
@@ -82,19 +87,49 @@ URL Parameters
 </ul>
 </li>
 <li>
+<a href=#authenticate class="toc-h1 toc-link" data-title=Authenticate>
+Authenticate
+</a>
+<ul class=toc-list-h2>
+<li>
+<a href=#start-2fa-authentication class="toc-h2 toc-link" data-title="Start 2FA authentication">
+Start 2FA authentication
+</a>
+<ul class=toc-list-h3>
+<li>
+<a href=#http-request-2 class="toc-h3 toc-link" data-title="HTTP Request">
+HTTP Request
+</a>
+</li>
+<li>
+<a href=#http-response class="toc-h3 toc-link" data-title="HTTP Response">
+HTTP Response
+</a>
+</li>
+</ul>
+</li>
+<li>
+<a href=#check-2fa-authentication-status class="toc-h2 toc-link" data-title="Check 2FA authentication status">
+Check 2FA authentication status
+</a>
+<ul class=toc-list-h3>
+<li>
+<a href=#http-request-1-1 class="toc-h3 toc-link" data-title="HTTP Request">
+HTTP Request
+</a>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
 <a href=#errors class="toc-h1 toc-link" data-title=Errors>
 Errors
 </a>
 </li>
 </ul>
 <ul class=toc-footer>
-<li class=toc-h1>Translation</li>
-<ul>
-<li class=toc-h2><a href=https://docuapi.netlify.com/nn/>Nynorsk</a></li>
-</ul>
-</ul>
-<ul class=toc-footer>
-<li><a href=#>Sign Up for a Developer Key</a></li>
+<li><a href=mailto:info@encrypxon.com>Sign Up for a Developer Key</a></li>
 <li>Documentation Powered by <a href=https://github.com/bep/docuapi>DocuAPI</a></li>
 <li>Hugo Theme by <a href=https://github.com/bep>bep</a></li>
 </ul>
@@ -102,148 +137,90 @@ Errors
 <div class=page-wrapper>
 <div class=dark-box></div>
 <div class=content>
-<h1 id=introduction>Introduction</h1><p>Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.</p>
-<p>We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
-<p><strong>This example API documentation page was created with <a href=https://github.com/bep/docuapi/>DocuAPI</a>, a multilingual documentation theme for the static site generator <a href=http://gohugo.io/>Hugo</a>.</strong></p>
-<h1 id=authentication>Authentication</h1><blockquote>
+<h1 id=introduction>Introduction</h1><p>Welcome to the Encrypxon 2FA API! You can use our API to add 2FA into your web application.</p>
+<p>We have language bindings in Shell, javascript and C# with more to come!</p>
+<p>You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
+<h1 id=how-the-2fa-process-works>How the 2FA process works</h1><p>The enrollment process works by notifying the Encrypxon app on the device to be used as the customers 2FA device that an enrollment request has been generated.</p>
+<p>The QRCode that is scanned by the users device has a unique identifier for the enrollment. When the QRCode is scanned, the device generates a new key pair to encrypt the data used later in the 2FA authentication process. The public key of this key pair is sent to the Encrypxon server along with unique enrollment code. The private key is held in secure storage in the customers device. It never leaves the device.</p>
+<p>Using this mechanism of scanning a QRCode ensures that the user has the phone in proximity of your web application during the enrollment process.</p>
+<p>When a 2FA is requested by your application, the Encrypxon server sends some entropy encrypted with the public key of the users device, generated during the enrollment process.
+The device can decrypt this entropy using its private key. The decrypted entropy is sent back to the Encrypxon server and compared with the entropy sent to the device. If this matches then the 2FA is successful and your application can be notified that the user should be allowed to log in.</p>
+<p>A separate key pair is generated on the device for every website using the Encrypxon 2FA process.</p>
+<p>Every 2FA request is stored on the Encrypxon server for audit purposes.</p>
+<h1 id=api-authentication>API Authentication</h1><blockquote>
 <p>To authorize, use this code:</p>
 </blockquote>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
-
-<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;github.com/bep/kittn/auth&#34;</span>
-
-<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
-	<span style=color:#a6e22e>api</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>auth</span>.<span style=color:#a6e22e>Authorize</span>(<span style=color:#e6db74>&#34;meowmeowmeow&#34;</span>)
-
-	<span style=color:#75715e>// Just to make it compile
-</span><span style=color:#75715e></span>	<span style=color:#a6e22e>_</span> = <span style=color:#a6e22e>api</span>
-}
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ruby data-lang=ruby>require <span style=color:#e6db74>&#39;kittn&#39;</span>
-
-api <span style=color:#f92672>=</span> <span style=color:#66d9ef>Kittn</span><span style=color:#f92672>::</span><span style=color:#66d9ef>APIClient</span><span style=color:#f92672>.</span>authorize!(<span style=color:#e6db74>&#39;meowmeowmeow&#39;</span>)
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> kittn
-
-api <span style=color:#f92672>=</span> kittn<span style=color:#f92672>.</span>authorize(<span style=color:#e6db74>&#39;meowmeowmeow&#39;</span>)
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># With shell, you can just pass the correct header with each request</span>
-curl <span style=color:#e6db74>&#34;api_endpoint_here&#34;</span>
-  -H <span style=color:#e6db74>&#34;Authorization: meowmeowmeow&#34;</span>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># With shell, you can just pass the correct header with each request</span>
+curl <span style=color:#e6db74>&#34;https://api.encrypxon.com&#34;</span>
+  -H <span style=color:#e6db74>&#34;X-API-Key: YourApiKey&#34;</span>
 </code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>kittn</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;kittn&#39;</span>);
 
 <span style=color:#66d9ef>let</span> <span style=color:#a6e22e>api</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>kittn</span>.<span style=color:#a6e22e>authorize</span>(<span style=color:#e6db74>&#39;meowmeowmeow&#39;</span>);
+</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-csharp data-lang=csharp><span style=color:#66d9ef>var</span> config = <span style=color:#66d9ef>new</span> EncrypxonClientConfiguration {ApiKey = <span style=color:#e6db74>&#34;YourApiKey&#34;</span>};
+<span style=color:#66d9ef>var</span> client = <span style=color:#66d9ef>new</span> Encrypxon2FaClient(config);
 </code></pre></div><blockquote>
-<p>Make sure to replace <code>meowmeowmeow</code> with your API key.</p>
+<p>Make sure to replace <code>YourApiKey</code> with your API key.</p>
 </blockquote>
-<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href=http://example.com/developers>developer portal</a>.</p>
-<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
-<p><code>Authorization: meowmeowmeow</code></p>
+<p>Encrypxon uses API keys to allow access to the API. You can get a new Encrypxon API key by emailing us at <a href=mailto:info@encrypxon.com>developer support</a>.</p>
+<p>Encrypxon expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
+<p><code>X_API_Key: YourApiKey</code></p>
 <aside class=notice>
-You must replace <code>meowmeowmeow</code> with your personal API key.
+You must replace <code>YourApiKey</code> with your personal API key.
 </aside>
-<h1 id=kittens>Kittens</h1>
-<h2 id=get-all-kittens>Get All Kittens</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
-
-<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;github.com/bep/kittn/auth&#34;</span>
-
-<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
-	<span style=color:#a6e22e>api</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>auth</span>.<span style=color:#a6e22e>Authorize</span>(<span style=color:#e6db74>&#34;meowmeowmeow&#34;</span>)
-
-	<span style=color:#a6e22e>_</span> = <span style=color:#a6e22e>api</span>.<span style=color:#a6e22e>GetKittens</span>()
-}
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ruby data-lang=ruby>require <span style=color:#e6db74>&#39;kittn&#39;</span>
-
-api <span style=color:#f92672>=</span> <span style=color:#66d9ef>Kittn</span><span style=color:#f92672>::</span><span style=color:#66d9ef>APIClient</span><span style=color:#f92672>.</span>authorize!(<span style=color:#e6db74>&#39;meowmeowmeow&#39;</span>)
-api<span style=color:#f92672>.</span>kittens<span style=color:#f92672>.</span>get
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> kittn
-
-api <span style=color:#f92672>=</span> kittn<span style=color:#f92672>.</span>authorize(<span style=color:#e6db74>&#39;meowmeowmeow&#39;</span>)
-api<span style=color:#f92672>.</span>kittens<span style=color:#f92672>.</span>get()
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>curl <span style=color:#e6db74>&#34;http://example.com/api/kittens&#34;</span>
-  -H <span style=color:#e6db74>&#34;Authorization: meowmeowmeow&#34;</span>
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>kittn</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;kittn&#39;</span>);
-
-<span style=color:#66d9ef>let</span> <span style=color:#a6e22e>api</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>kittn</span>.<span style=color:#a6e22e>authorize</span>(<span style=color:#e6db74>&#39;meowmeowmeow&#39;</span>);
-<span style=color:#66d9ef>let</span> <span style=color:#a6e22e>kittens</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>api</span>.<span style=color:#a6e22e>kittens</span>.<span style=color:#a6e22e>get</span>();
+<h1 id=enroll>Enroll</h1>
+<h2 id=enroll-a-user-in-2fa>Enroll a user in 2FA</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-csharp data-lang=csharp><span style=color:#66d9ef>var</span> config = <span style=color:#66d9ef>new</span> EncrypxonClientConfiguration {ApiKey = <span style=color:#e6db74>&#34;YourApiKey&#34;</span>};
+<span style=color:#66d9ef>var</span> client = <span style=color:#66d9ef>new</span> Encrypxon2FaClient(config);
+<span style=color:#66d9ef>var</span> body = <span style=color:#66d9ef>new</span> EnrollRequest {Emaiil = <span style=color:#e6db74>&#34;customerEmail&#34;</span>};
+<span style=color:#66d9ef>var</span> res = <span style=color:#66d9ef>await</span> client.Enroll2faAsync();
+<span style=color:#66d9ef>var</span> qrcodeImageBase64Encoded = res.Result.Result.QrCode;
 </code></pre></div><blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>The request body should be</p>
 </blockquote>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>[
-  {
-    <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#ae81ff>1</span>,
-    <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Fluffums&#34;</span>,
-    <span style=color:#f92672>&#34;breed&#34;</span>: <span style=color:#e6db74>&#34;calico&#34;</span>,
-    <span style=color:#f92672>&#34;fluffiness&#34;</span>: <span style=color:#ae81ff>6</span>,
-    <span style=color:#f92672>&#34;cuteness&#34;</span>: <span style=color:#ae81ff>7</span>
-  },
-  {
-    <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#ae81ff>2</span>,
-    <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Max&#34;</span>,
-    <span style=color:#f92672>&#34;breed&#34;</span>: <span style=color:#e6db74>&#34;unknown&#34;</span>,
-    <span style=color:#f92672>&#34;fluffiness&#34;</span>: <span style=color:#ae81ff>5</span>,
-    <span style=color:#f92672>&#34;cuteness&#34;</span>: <span style=color:#ae81ff>10</span>
-  }
-]
-</code></pre></div><p>This endpoint retrieves all kittens.</p>
-<h3 id=http-request>HTTP Request</h3><p><code>GET http://example.com/api/kittens</code></p>
-<h3 id=query-parameters>Query Parameters</h3><table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
-</tr>
-<tr>
-<td>available</td>
-<td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
-</tr>
-</tbody>
-</table>
-<aside class=success>
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-<h2 id=get-a-specific-kitten>Get a Specific Kitten</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=color:#f92672>package</span> <span style=color:#a6e22e>main</span>
-
-<span style=color:#f92672>import</span> <span style=color:#e6db74>&#34;github.com/bep/kittn/auth&#34;</span>
-
-<span style=color:#66d9ef>func</span> <span style=color:#a6e22e>main</span>() {
-	<span style=color:#a6e22e>api</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>auth</span>.<span style=color:#a6e22e>Authorize</span>(<span style=color:#e6db74>&#34;meowmeowmeow&#34;</span>)
-
-	<span style=color:#a6e22e>_</span> = <span style=color:#a6e22e>api</span>.<span style=color:#a6e22e>GetKitten</span>(<span style=color:#ae81ff>2</span>)
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+    <span style=color:#f92672>&#34;email&#34;</span>: <span style=color:#e6db74>&#34;useremail@somedomain.com&#34;</span>
 }
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ruby data-lang=ruby>require <span style=color:#e6db74>&#39;kittn&#39;</span>
-
-api <span style=color:#f92672>=</span> <span style=color:#66d9ef>Kittn</span><span style=color:#f92672>::</span><span style=color:#66d9ef>APIClient</span><span style=color:#f92672>.</span>authorize!(<span style=color:#e6db74>&#39;meowmeowmeow&#39;</span>)
-api<span style=color:#f92672>.</span>kittens<span style=color:#f92672>.</span>get(<span style=color:#ae81ff>2</span>)
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>import</span> kittn
-
-api <span style=color:#f92672>=</span> kittn<span style=color:#f92672>.</span>authorize(<span style=color:#e6db74>&#39;meowmeowmeow&#39;</span>)
-api<span style=color:#f92672>.</span>kittens<span style=color:#f92672>.</span>get(<span style=color:#ae81ff>2</span>)
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>curl <span style=color:#e6db74>&#34;http://example.com/api/kittens/2&#34;</span>
-  -H <span style=color:#e6db74>&#34;Authorization: meowmeowmeow&#34;</span>
-</code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-javascript data-lang=javascript><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>kittn</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>require</span>(<span style=color:#e6db74>&#39;kittn&#39;</span>);
-
-<span style=color:#66d9ef>let</span> <span style=color:#a6e22e>api</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>kittn</span>.<span style=color:#a6e22e>authorize</span>(<span style=color:#e6db74>&#39;meowmeowmeow&#39;</span>);
-<span style=color:#66d9ef>let</span> <span style=color:#a6e22e>max</span> <span style=color:#f92672>=</span> <span style=color:#a6e22e>api</span>.<span style=color:#a6e22e>kittens</span>.<span style=color:#a6e22e>get</span>(<span style=color:#ae81ff>2</span>);
 </code></pre></div><blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
 <div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
-  <span style=color:#f92672>&#34;id&#34;</span>: <span style=color:#ae81ff>2</span>,
-  <span style=color:#f92672>&#34;name&#34;</span>: <span style=color:#e6db74>&#34;Max&#34;</span>,
-  <span style=color:#f92672>&#34;breed&#34;</span>: <span style=color:#e6db74>&#34;unknown&#34;</span>,
-  <span style=color:#f92672>&#34;fluffiness&#34;</span>: <span style=color:#ae81ff>5</span>,
-  <span style=color:#f92672>&#34;cuteness&#34;</span>: <span style=color:#ae81ff>10</span>
+  <span style=color:#f92672>&#34;isError&#34;</span> : <span style=color:#66d9ef>false</span>,
+  <span style=color:#f92672>&#34;message&#34;</span> : <span style=color:#e6db74>&#34;Success&#34;</span>,
+  <span style=color:#f92672>&#34;exceptionMessage&#34;</span> : <span style=color:#e6db74>&#34;some message about what went wrong&#34;</span>,
+  <span style=color:#f92672>&#34;result&#34;</span> : {
+    <span style=color:#f92672>&#34;qrcode&#34;</span> : <span style=color:#e6db74>&#34;base64 encoded string&#34;</span>
+  }
 }
-</code></pre></div><p>This endpoint retrieves a specific kitten.</p>
-<aside class=warning>Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code></code> blocks to denote code.</aside>
-<h3 id=http-request-1>HTTP Request</h3><p><code>GET http://example.com/kittens/&lt;ID></code></p>
+</code></pre></div><p>This endpoint enrolls a user in 2FA.</p>
+<p>The request tells Encrypxon the customer identifier.</p>
+<p>The response provides a QRCode in a base64 encoded string. This should be displayed to your user.</p>
+<p>You can use the following html to display the decoded image.</p>
+<p><code>&lt;img src="data:image/jpeg;base64, {the base64 encoded data}]">
+</code></p>
+<p>You application should inform the user to open the Encrypxon app on their phone and go to the Enroll 2FA menu option. Here they must scan the QRCode. Once done they are enrolled as a 2FA user.</p>
+<h3 id=http-request>HTTP Request</h3><p><code>POST http://api.encrypxon.com/2fa/enroll</code></p>
+<p>The request body contains a single parameter which is the identifier of the customer to be enrolled.</p>
+<aside class=success>
+Remember — the identifier can be any string value as long as it is unique for your customers.
+</aside>
+<h1 id=enrolled>Enrolled</h1>
+<h2 id=check-whether-a-user-is-enrolled-in-2fa>Check whether a user is enrolled in 2FA</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-csharp data-lang=csharp><span style=color:#66d9ef>var</span> config = <span style=color:#66d9ef>new</span> EncrypxonClientConfiguration {ApiKey = <span style=color:#e6db74>&#34;YourApiKey&#34;</span>};
+<span style=color:#66d9ef>var</span> client = <span style=color:#66d9ef>new</span> Encrypxon2FaClient(config);
+<span style=color:#66d9ef>var</span> res = <span style=color:#66d9ef>await</span> client.GetEnrolledAsync();
+<span style=color:#66d9ef>bool</span> enrolled = res.Result.Result;
+</code></pre></div><blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+  <span style=color:#f92672>&#34;isError&#34;</span> : <span style=color:#66d9ef>false</span>,
+  <span style=color:#f92672>&#34;message&#34;</span> : <span style=color:#e6db74>&#34;Success&#34;</span>,
+  <span style=color:#f92672>&#34;exceptionMessage&#34;</span> : <span style=color:#e6db74>&#34;some message about what went wrong&#34;</span>,
+  <span style=color:#f92672>&#34;result&#34;</span> : <span style=color:#66d9ef>true</span>
+}
+</code></pre></div><p>This endpoint tests whether or not a user is enrolled in 2FA.</p>
+<p>The result is <code>true</code> if the user is enrolled or <code>false</code> otherwise.</p>
+<p>You should use this during the login process to decide whether or not to start a 2FA authorisation or not.</p>
+<p>Addiitionally you might want to use this method to decide whether or not to offer enrollment in the users profile page in your website.</p>
+<h3 id=http-request-1>HTTP Request</h3><p><code>POST http://api.encrypxon.com/2fa/enrolled?userId={customerId}</code></p>
 <h3 id=url-parameters>URL Parameters</h3><table>
 <thead>
 <tr>
@@ -253,13 +230,65 @@ api<span style=color:#f92672>.</span>kittens<span style=color:#f92672>.</span>ge
 </thead>
 <tbody>
 <tr>
-<td>ID</td>
-<td>The ID of the kitten to retrieve</td>
+<td>userId</td>
+<td>The ID of the customer to check enrollment status for</td>
 </tr>
 </tbody>
 </table>
-<h1 id=errors>Errors</h1><aside class=notice>This error section is stored in a separate file, errors.md. DocuAPI allows you to split the single page documentation in as many files as needed. Files are included in the default Hugo page order . One way of ordering the pages is by setting the page `weight` in the front matter. Pages with lower weight will be listed first.</aside>
-<p>The Kittn API uses the following error codes:</p>
+<aside class=success>
+Remember — the identifier must be the same string value ass used in the enrollment.
+</aside>
+<h1 id=authenticate>Authenticate</h1><p>These methods are used to use 2FA to authenticate a user.</p>
+<h2 id=start-2fa-authentication>Start 2FA authentication</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-csharp data-lang=csharp><span style=color:#66d9ef>var</span> config = <span style=color:#66d9ef>new</span> EncrypxonClientConfiguration {ApiKey = <span style=color:#e6db74>&#34;YourApiKey&#34;</span>};
+<span style=color:#66d9ef>var</span> client = <span style=color:#66d9ef>new</span> Encrypxon2FaClient(config);
+<span style=color:#66d9ef>var</span> body = <span style=color:#66d9ef>new</span> Start2FaRequest { Email = <span style=color:#e6db74>&#34;customerEmail&#34;</span>}
+<span style=color:#66d9ef>var</span> res = <span style=color:#66d9ef>await</span> client.Start2FaAuthenticationAsync(body);
+<span style=color:#66d9ef>string</span> requestId = res.Result.Result;
+</code></pre></div><blockquote>
+<p>The request body should be</p>
+</blockquote>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+    <span style=color:#f92672>&#34;email&#34;</span>: <span style=color:#e6db74>&#34;useremail@somedomain.com&#34;</span>
+}
+</code></pre></div><blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+  <span style=color:#f92672>&#34;isError&#34;</span> : <span style=color:#66d9ef>false</span>,
+  <span style=color:#f92672>&#34;message&#34;</span> : <span style=color:#e6db74>&#34;Success&#34;</span>,
+  <span style=color:#f92672>&#34;exceptionMessage&#34;</span> : <span style=color:#e6db74>&#34;some message about what went wrong&#34;</span>,
+  <span style=color:#f92672>&#34;result&#34;</span> : <span style=color:#e6db74>&#34;requestId&#34;</span>
+}
+</code></pre></div><p>This endpoint starts the 2FA authentication process for a user. You shoudl tell the user to open the Encrypxon app and go to the Authorise 2FA menu option.
+Here they will click on the item for your website, indicated by your favicon and domain name.</p>
+<p>When they click on this the app will negotiate the 2FA request with the Encrypxon server and if this is the users enrolled device the 2FA authentication will be confirmed.</p>
+<h3 id=http-request-2>HTTP Request</h3><p><code>POST http://api.encrypxon.com/2fa/Initiate2Fa</code></p>
+<p>The request body contains a single parameter which is the identifier of the customer to be enrolled.</p>
+<h3 id=http-response>HTTP Response</h3><p>The reponse provides a unique request ID that is used in the endpoint which checks if the authorisation has been successful.</p>
+<aside class=success>
+Remember — the identifier must be the same string value as used in the enrollment.
+</aside>
+<h2 id=check-2fa-authentication-status>Check 2FA authentication status</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-csharp data-lang=csharp><span style=color:#66d9ef>var</span> config = <span style=color:#66d9ef>new</span> EncrypxonClientConfiguration {ApiKey = <span style=color:#e6db74>&#34;YourApiKey&#34;</span>};
+<span style=color:#66d9ef>var</span> client = <span style=color:#66d9ef>new</span> Encrypxon2FaClient(config);
+<span style=color:#66d9ef>var</span> res = <span style=color:#66d9ef>await</span> client.Get2FaAuthorisationStateAsync(secondFactorId);
+<span style=color:#66d9ef>bool</span> auth = res.Result.Result;
+</code></pre></div><blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json>{
+  <span style=color:#f92672>&#34;isError&#34;</span> : <span style=color:#66d9ef>false</span>,
+  <span style=color:#f92672>&#34;message&#34;</span> : <span style=color:#e6db74>&#34;Success&#34;</span>,
+  <span style=color:#f92672>&#34;exceptionMessage&#34;</span> : <span style=color:#e6db74>&#34;some message about what went wrong&#34;</span>,
+  <span style=color:#f92672>&#34;result&#34;</span> : <span style=color:#66d9ef>true</span>
+}
+</code></pre></div><p>This endpoint tests whether or not a user has successfully responded to the 2FA authorisation.</p>
+<p>The result is <code>true</code> if the user is enrolled or <code>false</code> otherwise.</p>
+<p>The parameter required is the ID returned in the Start 2FA Authentication call.</p>
+<h3 id=http-request-1-1>HTTP Request</h3><p><code>POST http://api.encrypxon.com/2fa/Authorisation?secondFactorId={requestId}</code></p>
+<aside class=success>
+Remember — the identifier must be the same string value as returned in the Start Authorisation request.
+</aside>
+<h1 id=errors>Errors</h1><p>The Encrypxon 2FA API uses the following error codes:</p>
 <table>
 <thead>
 <tr>
@@ -277,32 +306,16 @@ api<span style=color:#f92672>.</span>kittens<span style=color:#f92672>.</span>ge
 <td>Unauthorized &ndash; Your API key is wrong</td>
 </tr>
 <tr>
-<td>403</td>
-<td>Forbidden &ndash; The kitten requested is hidden for administrators only</td>
-</tr>
-<tr>
 <td>404</td>
-<td>Not Found &ndash; The specified kitten could not be found</td>
+<td>Not Found &ndash; The path you specified does not exist</td>
 </tr>
 <tr>
 <td>405</td>
-<td>Method Not Allowed &ndash; You tried to access a kitten with an invalid method</td>
+<td>Method Not Allowed &ndash; You tried to use invalid method</td>
 </tr>
 <tr>
 <td>406</td>
 <td>Not Acceptable &ndash; You requested a format that isn&rsquo;t json</td>
-</tr>
-<tr>
-<td>410</td>
-<td>Gone &ndash; The kitten requested has been removed from our servers</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&rsquo;m a teapot</td>
-</tr>
-<tr>
-<td>429</td>
-<td>Too Many Requests &ndash; You&rsquo;re requesting too many kittens! Slow down!</td>
 </tr>
 <tr>
 <td>500</td>
@@ -310,17 +323,15 @@ api<span style=color:#f92672>.</span>kittens<span style=color:#f92672>.</span>ge
 </tr>
 <tr>
 <td>503</td>
-<td>Service Unavailable &ndash; We&rsquo;re temporarially offline for maintanance. Please try again later.</td>
+<td>Service Unavailable &ndash; We&rsquo;re temporarially offline for maintenance. Please try again later.</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class=dark-box>
 <div class=lang-selector>
-<a href=# data-language-name=go>Go</a>
+<a href=# data-language-name=csharp>CSharp</a>
 <a href=# data-language-name=shell>Shell</a>
-<a href=# data-language-name=ruby>Ruby</a>
-<a href=# data-language-name=python>Python</a>
 <a href=# data-language-name=javascript>Javascript</a>
 </div>
 </div>
