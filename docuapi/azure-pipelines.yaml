@@ -39,7 +39,7 @@ stages:
             $(tag) 
     - task: PublishPipelineArtifact@0
       inputs:
-        targetPath: '$(Build.SourcesDirectory)/DOCUAPI/docker-compose.yml'
+        targetPath: '$(Build.SourcesDirectory)/docuapi/docker-compose.yml'
         artifactName: dockercompose
 
 
